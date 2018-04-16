@@ -39,7 +39,7 @@ artifacts:
 deploy_script:
 - ps: >-    
     echo $artifacts;
-#    echo "v$env:APPVEYOR_BUILD_VERSION" | Out-File version.txt -Encoding ASCII;
+     echo "v$env:APPVEYOR_BUILD_VERSION" | Out-File version.txt -Encoding ASCII;
 #    Invoke-WebRequest -OutFile .\upload.ps1 -Header @{"Authorization" = "token "+${env:UPLOAD_SCRIPT_TOKEN}} -Uri ${env:UPLOAD_SCRIPT};
     
 #on_finish:
