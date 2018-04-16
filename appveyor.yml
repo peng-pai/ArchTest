@@ -29,7 +29,7 @@ after_build:
 - ps: >-   
     7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ConsoleTest\ConsoleTest\Bin\Release\*;
     
-test: off
+#test: off
 
 artifacts:
 - path: ArchTest.zip
