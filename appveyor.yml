@@ -9,8 +9,25 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 
-#environment:
-
+environment:
+  OSS_KEY:
+    secure: QYINaAPQnhU322eIDgzcbAACcK/J4RJiIMuId3nHMEE=
+  OSS_SECRET:
+    secure: o2spLdE6KXX2wiFtTBG8YUt9UYIhTs3k8DIb2K0GFTU=
+  OSS_BUCKET: 
+    secure: w+QucFgKS4LRjrAOGhvbhg==
+  OSS_HOST: 
+    secure: jNISX23HkjFxTHBemBYw2i7CuXrKhc4E+YnAmqFNRXo=    
+  UPLOAD_SCRIPT: 
+    secure: AUhApkEiKE/FYomjoOoKttLqIwx0lEuoxAUQ9/DPS8DQzw0RWJrL8kqgkevz6/D5Hyzu+OOimrxF/OZIgM686og9lbkZeWW8hFD1ZL0TDik=
+  UPLOAD_SCRIPT_TOKEN:
+    secure: FdOVBqFDwaINVA0nSA2wCnTWFcwI6NdEk4m/VWMG3g2EbJ9EKU2ntJQJegiyATrI
+    
+install:
+  - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+  - cmd: appveyor-tools\secure-file -decrypt path-to\encrypted-filename.ext.enc -secret %my_secret%
+  - sh: ./appveyor-tools/secure-file -decrypt path-to/encrypted-filename.ext.enc -secret $my_secret
+  
 cache:
 # - '%APPVEYOR_BUILD_FOLDER%\ConsoleTest\packages -> %APPVEYOR_BUILD_FOLDER%\ConsoleTest\*\packages.config'
 
@@ -29,18 +46,17 @@ after_build:
 - ps: >-   
     7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ConsoleTest\ConsoleTest\Bin\Release\*;
     
-#test: off
+test: off
 
 artifacts:
 - path: ArchTest.zip
   name: ArchTest  
 
-
 deploy_script:
 - ps: >-    
     echo $artifacts;
      echo "v$env:APPVEYOR_BUILD_VERSION" | Out-File version.txt -Encoding ASCII;
-#    Invoke-WebRequest -OutFile .\upload.ps1 -Header @{"Authorization" = "token "+${env:UPLOAD_SCRIPT_TOKEN}} -Uri ${env:UPLOAD_SCRIPT};
+     Invoke-WebRequest -OutFile .\upload.ps1 -Header @{"Authorization" = "token "+${env:UPLOAD_SCRIPT_TOKEN}} -Uri ${env:UPLOAD_SCRIPT};
     
 #on_finish:
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
