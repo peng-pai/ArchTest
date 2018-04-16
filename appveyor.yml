@@ -12,7 +12,7 @@ assembly_info:
 #environment:
 
 cache:
- - '%APPVEYOR_BUILD_FOLDER%\ConsoleTest\packages -> %APPVEYOR_BUILD_FOLDER%\ConsoleTest\*\packages.config'
+# - '%APPVEYOR_BUILD_FOLDER%\ConsoleTest\packages -> %APPVEYOR_BUILD_FOLDER%\ConsoleTest\*\packages.config'
 
 before_build:
 - cmd: >-
