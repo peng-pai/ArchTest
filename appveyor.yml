@@ -1,0 +1,46 @@
+version: 1.0.0.{build}
+configuration: Release
+force_https_clone: true
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+#environment:
+
+cache:
+# - '%APPVEYOR_BUILD_FOLDER%\src\packages -> %APPVEYOR_BUILD_FOLDER%\src\*\packages.config'
+
+before_build:
+- cmd: >-
+#    nuget restore "%APPVEYOR_BUILD_FOLDER%\src\HipHop.sln" -verbosity detailed
+
+build:
+  project: ./ConsoleApp/ConsoleApp.sln
+  publish_wap_xcopy: true
+  verbosity: minimal
+build_script:
+- cmd: >-
+     msbuild "%APPVEYOR_BUILD_FOLDER%\ConsoleApp\ConsoleApp.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release;DebugType=full /p:DeployOnBuild=True /p:ExcludeGeneratedDebugSymbol=False /p:AutoParameterizationWebConfigConnectionStrings=False
+after_build:
+- ps: >-   
+    7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ArchTest\ConsoleApp\ConsoleApp\Bin\Release\netcoreapp2.0\*;
+    
+test: off
+
+artifacts:
+- path: ArchTest.zip
+  name: ArchTest  
+
+
+deploy_script:
+- ps: >-    
+    echo $artifacts;
+#    echo "v$env:APPVEYOR_BUILD_VERSION" | Out-File version.txt -Encoding ASCII;
+#    Invoke-WebRequest -OutFile .\upload.ps1 -Header @{"Authorization" = "token "+${env:UPLOAD_SCRIPT_TOKEN}} -Uri ${env:UPLOAD_SCRIPT};
+    
+#on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
