@@ -27,7 +27,7 @@ build_script:
      msbuild "%APPVEYOR_BUILD_FOLDER%\ConsoleTest\ConsoleTest.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release;DebugType=full /p:DeployOnBuild=True /p:ExcludeGeneratedDebugSymbol=False /p:AutoParameterizationWebConfigConnectionStrings=False
 after_build:
 - ps: >-   
-    7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ArchTest\ConsoleTest\ConsoleTest\Bin\Release\*;
+    7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ConsoleTest\ConsoleTest\Bin\Release\*;
     
 test: off
 
