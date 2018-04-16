@@ -16,10 +16,10 @@ cache:
 
 before_build:
 - cmd: >-
-#    nuget restore "%APPVEYOR_BUILD_FOLDER%\src\HipHop.sln" -verbosity detailed
+#    nuget restore "%APPVEYOR_BUILD_FOLDER%\ConsoleTest\ConsoleTest.sln" -verbosity detailed
 
 build:
-  project: ./ConsoleApp/ConsoleApp.sln
+  project: ./ConsoleTest/ConsoleTest.sln
   publish_wap_xcopy: true
   verbosity: minimal
 build_script:
@@ -27,7 +27,7 @@ build_script:
      msbuild "%APPVEYOR_BUILD_FOLDER%\ConsoleApp\ConsoleApp.sln" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /property:Configuration=Release;DebugType=full /p:DeployOnBuild=True /p:ExcludeGeneratedDebugSymbol=False /p:AutoParameterizationWebConfigConnectionStrings=False
 after_build:
 - ps: >-   
-    7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ArchTest\ConsoleApp\ConsoleApp\Bin\Release\netcoreapp2.0\*;
+    7z a -tzip ArchTest.zip ${env:APPVEYOR_BUILD_FOLDER}\ArchTest\ConsoleTest\ConsoleTest\Bin\Release\*;
     
 test: off
 
